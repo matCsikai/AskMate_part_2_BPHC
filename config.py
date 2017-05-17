@@ -1,4 +1,5 @@
 import personal_config
+import psycopg2
 
 
 def connection():
@@ -15,4 +16,3 @@ def connection():
     except Exception as e:
         print('Cannot connect')
         print(e)
-        
