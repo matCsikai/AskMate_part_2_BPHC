@@ -5,21 +5,22 @@ app = Flask(__name__)
 
 
 @app.route("/")
-@app.route("/questions")
-def page_home():
-    file_name = "question.csv"
-    all_data = read_data(file_name)
-    decoded_data = time_decode(all_data)
-    return render_template("all_question.html", questions=decoded_data)
+def home_page():
+    all_data = query.latest_five_question()
+    return render_template("all_question.html", questions=all_data)
+
+@app.route("/list")
+def questions():
+    all_data = query.all_question()
+    return render_template("all_question.html", questions=all_data)
 
 
 @app.route("/question/new", methods=['GET', 'POST'])
 def page_questions():
-    file_name = "question.csv"
     title = "ASK A QUESTION"
     button_name = "Post your question"
-    all_data = read_data(file_name)
-    timestamp = int(time.time())
+    all_data = query.insert_question()
+    # time?
     data_list = []
 
     if request.method == "POST":
