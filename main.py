@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-import time
 import query
 import common
 import config
@@ -32,33 +31,19 @@ def add_question():
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def all_answers(question_id):
-    question = query.all_answers(config.connection(), question_id)
-    return render_template('all_answers.html', question=question)
+    question_data = query.question(config.connection(), question_id)
+    answer_data = query.answer(config.connection(), question_id)
+    return render_template('all_answers.html', question_data=question_data, answer_data=answer_data)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
-    question_database = read_data('question.csv')
-    for line in question_database:
-        if str(question_id) in line[0]:
-            question_line = line
-
-    file_name = "answer.csv"
-    button_name = "Post your answer"
-    all_data = read_data(file_name)
-    timestamp = int(time.time())
-    data_list = []
+    title = "Add answer"
     if request.method == "POST":
-        data_list.append(str(generate_data_id(file_name)))
-        data_list.append(str(timestamp))
-        data_list.append(' ')  # view number
-        data_list.append(question_id)
-        data_list.append(request.form['message'])
-        data_list.append(' ')  # for picture
-        all_data.append(data_list)
-        new_data_to_write = write_data(file_name, all_data)
+        answer_message = request.form['message']
+        query.insert_answer(config.connection(), answer_message, question_id)
         return redirect(url_for('all_answers', question_id=question_id))
-    return render_template("add_answer.html", question_line=question_line)
+    return render_template("add_answer.html",  title=title, button_name=title)
 
 
 if __name__ == "__main__":

@@ -3,26 +3,25 @@
     
 <head>
     <meta charset="UTF-8">
-    <title>AskMate - Question {{ question_id }}</title>
+    <title>AskMate - Question page</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
-
     <a href="/list" class="button">all question</a>
-    
-    <h1>{{ question[2] }}</h1>
-    <p><b>{{ question[3] }}</b></p>
-    <h2>answers</h2>
-    valasz: {{ question[4] }}
-    
-
-    <hr>
-    <hr>
-
-
-        
+    {% for id, submisson_time, view_number, vote_number, title, message, image in question_data %}
+        <h1> {{ title }}</h1>
+        <p><b> {{ message }}</b></p>
+    {% endfor %}
+    <hr style="height: 5px; background: #000">
+    <h2>Answers</h2>
+    {% for id, submisson_time, vote_number, question_id, message, image in answer_data %}
+        <p> {{ message }} </p>
+        <hr>
+    {% endfor %}
+    <hr style="height: 5px; background: #000">
+    <a href="/question/{{ question_data[0][0] }}/new-answer" class="button">Add answer</a>
         
 </body>
 </html>

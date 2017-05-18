@@ -2,20 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add answer</title>
+    <title>{{ title }}</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-    <h1>Answer page</h1>
-    <h2>{{ question_line[4] }}</h2>
-    <p><b>{{ question_line[5] }}</b></p>
+    <h1>{{ title }}</h1>
     <hr>
     <form method="POST">
         <label for="answer"></label>
         <textarea name="message" id="" cols="50" rows="10" minlength="10"></textarea>
         <input type="submit" value="Send" class="button">
     </form>
-    <a href="/question/{{ question_line[0] }}" class="button">Back to the question page</a>
+    <input class="button" action="action" onclick="history.go(-1);" type="button" value="Back to the question page" />
 </body>
 </html>

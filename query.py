@@ -24,15 +24,29 @@ def insert_data(cursor, title, message):
     return cursor
 
 
-def all_answers(cursor, question_idd):
+def insert_answer(cursor, message, question_id):
+    answer_id = get_max_id_answer(config.connection())
+    dt = datetime.now()
     cursor.execute("""
-                    SELECT question.id, question.submission_time, question.title, question.message, answer.message FROM question
-                    INNER JOIN answer
-                    ON question.id = answer.question_id;
-                ;""")
-    rows = cursor.fetchall()
+        INSERT INTO answer
+        VALUES (%s, %s, 0, %s, %s, 0) """, (answer_id, dt, question_id, message))
+    return cursor
+
+
+def question(cursor, question_idd):
     question_idd_int = int(question_idd)
-    return rows[question_idd_int]
+    cursor.execute("""
+                    SELECT * from question WHERE id = %s;""", (question_idd_int, ))
+    rows = list(cursor.fetchall())
+    return rows
+
+
+def answer(cursor, question_idd):
+    question_idd_int = int(question_idd)
+    cursor.execute("""
+                    SELECT * from answer WHERE question_id = %s;""", (question_idd_int, ))
+    rows = list(cursor.fetchall())
+    return rows
 
 
 def get_max_id(cursor):
@@ -42,4 +56,10 @@ def get_max_id(cursor):
     rows = cursor.fetchall()
     return int(rows[0][0]) + 1
 
-# print(all_answers(config.connection(), 0))
+
+def get_max_id_answer(cursor):
+    cursor.execute("""
+        SELECT id from answer ORDER BY id DESC LIMIT 1
+        ;""")
+    rows = cursor.fetchall()
+    return int(rows[0][0]) + 1
