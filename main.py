@@ -1,18 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for
-from common import read_data, write_data, generate_data_id, time_decode
 import time
+import query
+import common
+import config
 app = Flask(__name__)
 
 
 @app.route("/")
 def home_page():
-    all_data = query.latest_five_question()
-    return render_template("all_question.html", questions=all_data)
+    five_latest_questions = common.display_data(query.five_latest_questions(config.connection()))
+    return render_template("all_question.html", all_question=five_latest_questions, title="Homepage")
+
 
 @app.route("/list")
 def questions():
-    all_data = query.all_question()
-    return render_template("all_question.html", questions=all_data)
+    all_question = common.display_data(query.all_question(config.connection()))
+    return render_template("all_question.html", all_question=all_question, title="All question")
 
 
 @app.route("/question/new", methods=['GET', 'POST'])
@@ -83,4 +86,4 @@ def new_answer(question_id):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
