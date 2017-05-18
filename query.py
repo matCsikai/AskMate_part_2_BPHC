@@ -63,3 +63,10 @@ def get_max_id_answer(cursor):
         ;""")
     rows = cursor.fetchall()
     return int(rows[0][0]) + 1
+
+
+def get_question(cursor, question_id):
+    cursor.execute("""
+        SELECT title, message from question WHERE id = %s """, (str(question_id)))
+    rows = cursor.fetchall()
+    return rows

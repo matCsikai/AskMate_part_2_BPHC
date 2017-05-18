@@ -46,5 +46,11 @@ def new_answer(question_id):
     return render_template("add_answer.html",  title=title, button_name=title)
 
 
+@app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
+def add_comment_question(question_id):
+    add_comment_question = query.get_question(config.connection(), question_id)
+    return render_template("add_comment_question.html", add_comment_question=add_comment_question, title="Add comment to question")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
