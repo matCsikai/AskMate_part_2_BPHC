@@ -49,8 +49,16 @@ def new_answer(question_id):
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_question(question_id):
     add_comment_question = query.get_question(config.connection(), question_id)
-    return render_template("add_comment_question.html", add_comment_question=add_comment_question, title="Add comment to question")
+    if request.method == 'POST':
+        comment_message = request.form['message']
+        insert_question = query.insert_question_comment(config.connection(), comment_message, question_id)
+        # display question list page
+        all_question = common.fetch_data(query.all_question(config.connection()))  
+        return render_template("all_question.html", all_question=all_question, title="All question")
+    return render_template("add_comment_question.html", add_comment_question=add_comment_question,
+                           question_id=question_id, title="Add comment to question")
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+

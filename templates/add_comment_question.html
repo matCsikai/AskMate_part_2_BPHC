@@ -12,10 +12,10 @@
     <h2>{{ add_comment_question[0][0] }}</h2>
     <p>{{ add_comment_question[0][1] }}</p>
     <hr>
-    <form method="POST">
+    <form action='/question/{{ question_id }}/new-comment' method="POST">
         <label for="answer"></label>
         <textarea name="message" id="" cols="50" rows="10" minlength="10"></textarea>
-        <input type="submit" value="Send" class="button">
+        <input type="submit" value="Send comment" class="button">
     </form>
     <a href="/" class="button">Back to the question page</a>
 </body>
