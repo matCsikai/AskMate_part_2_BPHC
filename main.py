@@ -30,10 +30,10 @@ def add_question():
 
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
-def all_answers(question_id):
+def question_page(question_id):
     question_data = query.question(config.connection(), question_id)
     answer_data = query.answer(config.connection(), question_id)
-    return render_template('all_answers.html', question_data=question_data, answer_data=answer_data)
+    return render_template('question_page.html', question_data=question_data, answer_data=answer_data)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -42,7 +42,7 @@ def new_answer(question_id):
     if request.method == "POST":
         answer_message = request.form['message']
         query.insert_answer(config.connection(), answer_message, question_id)
-        return redirect(url_for('all_answers', question_id=question_id))
+        return redirect(url_for('question_page', question_id=question_id))
     return render_template("add_answer.html",  title=title, button_name=title)
 
 

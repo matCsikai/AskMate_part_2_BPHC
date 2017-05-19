@@ -12,6 +12,12 @@
     <a href="/list" class="button" style="display: block; max-width: 100px; text-align:center; background: #9999FF">All question</a>
     <a href="/question/new" class="button">Ask a question</a>
     <table>
+        <tr>
+            <td>Id</td>
+            <td>Submission time</td>
+            <td>Title</td>
+            <td>Add comment</td>
+        </tr>
         {% for id, submisson_time, view_number, vote_number, title, message, image in all_question %}
         <tr>
             <td> {{ id }} </td>
