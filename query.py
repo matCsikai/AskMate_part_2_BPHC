@@ -52,26 +52,22 @@ def get_max_id_answer():
     return int(rows[0][0]) + 1
 
 
-def get_max_id_comment(cursor):
-    cursor.execute("""
-        SELECT id from comment ORDER BY id DESC LIMIT 1
-        ;""")
-    rows = cursor.fetchall()
+def get_max_id_comment():
+    query = """SELECT id from comment ORDER BY id DESC LIMIT 1;"""
+    rows = config.run_query(query)
     return int(rows[0][0]) + 1
 
 
-def get_question(cursor, question_id):
-    cursor.execute("""
-        SELECT title, message from question WHERE id = %s """, (str(question_id)))
-    rows = cursor.fetchall()
+def get_question(question_id):
+    query = """SELECT title, message from question WHERE id = %s """ % question_id
+    rows = config.run_query(query)
     return rows
 
 
-def insert_question_comment(cursor, message, question_id):
-    comment_id = get_max_id_comment(config.connection())
-    dt = datetime.now()
-    cursor.execute("""
-        INSERT INTO comment
-        VALUES (%s, %s, null, %s, %s) """, (comment_id, question_id, message, dt))
-    return cursor
+def insert_question_comment(message, question_id):
+    comment_id = get_max_id_comment()
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    query = """INSERT INTO comment
+            VALUES (%s, %s, null, '%s', '%s') """ % (comment_id, question_id, message, dt)
+    return config.run_query(query)
 
