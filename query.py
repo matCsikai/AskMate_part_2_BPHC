@@ -14,22 +14,20 @@ def all_question():
     return config.run_query(query)
 
 
-def insert_data(cursor, title, message):
-    question_id = get_max_id(config.connection())
-    dt = datetime.now()
-    cursor.execute("""
-        INSERT INTO question
-        VALUES (%s, %s, 0, 0, %s, %s, 0) """, (question_id, dt, title, message))
-    return cursor
+def insert_data(title, message):
+    question_id = get_max_id()
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    query = """INSERT INTO question
+            VALUES (%s, '%s', 0, 0, '%s', '%s', 0) """ % (question_id, dt, title, message)
+    return config.run_query(query)
 
 
-def insert_answer(cursor, message, question_id):
-    answer_id = get_max_id_answer(config.connection())
-    dt = datetime.now()
-    cursor.execute("""
-        INSERT INTO answer
-        VALUES (%s, %s, 0, %s, %s, 0) """, (answer_id, dt, question_id, message))
-    return cursor
+def insert_answer(message, question_id):
+    answer_id = get_max_id_answer()
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    query = """INSERT INTO answer
+            VALUES (%s, '%s', 0, '%s', '%s', 0) """ % (answer_id, dt, question_id, message)
+    return config.run_query(query)
 
 
 def question(question_idd):
@@ -42,19 +40,15 @@ def answer(question_idd):
     return config.run_query(query)
 
 
-def get_max_id(cursor):
-    cursor.execute("""
-        SELECT id from question ORDER BY id DESC LIMIT 1
-        ;""")
-    rows = cursor.fetchall()
+def get_max_id():
+    query = """SELECT id from question ORDER BY id DESC LIMIT 1;"""
+    rows = config.run_query(query)
     return int(rows[0][0]) + 1
 
 
-def get_max_id_answer(cursor):
-    cursor.execute("""
-        SELECT id from answer ORDER BY id DESC LIMIT 1
-        ;""")
-    rows = cursor.fetchall()
+def get_max_id_answer():
+    query = """SELECT id from answer ORDER BY id DESC LIMIT 1;"""
+    rows = config.run_query(query)
     return int(rows[0][0]) + 1
 
 

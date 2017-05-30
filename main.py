@@ -24,7 +24,7 @@ def add_question():
     if request.method == "POST":
         question_title = request.form['question_title']
         question_message = request.form['message']
-        query.insert_data(config.connection(), question_title, question_message)
+        query.insert_data(question_title, question_message)
         return redirect(url_for('home_page'))
     return render_template("add_question.html",  title=title, button_name=title)
 
@@ -41,7 +41,7 @@ def new_answer(question_id):
     title = "Add answer"
     if request.method == "POST":
         answer_message = request.form['message']
-        query.insert_answer(config.connection(), answer_message, question_id)
+        query.insert_answer(answer_message, question_id)
         return redirect(url_for('question_page', question_id=question_id))
     return render_template("add_answer.html",  title=title, button_name=title)
 
