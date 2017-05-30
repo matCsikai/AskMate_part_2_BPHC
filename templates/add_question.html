@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{% include 'header.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title> {{ title }} </title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-
-<body>
-    <h1> {{ title }} </h1>
-    <a href="/" class="button">Back to the list of questions</a>
     <form method="POST">
         <p>
             <label for="question_title">Question Title</label>
@@ -22,6 +11,6 @@
         </p>
         <input type="submit" value="{{ button_name }}" class="button" id="{{ button_name }}">
     </form>
-</body>
 
-</html>
+
+{% include 'footer.html' %}
