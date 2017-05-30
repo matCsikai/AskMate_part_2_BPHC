@@ -33,7 +33,9 @@ def add_question():
 def question_page(question_id):
     question_data = query.question(question_id)
     answer_data = query.answer(question_id)
-    return render_template('question_page.html', question_data=question_data, answer_data=answer_data)
+    question_comment_data = query.question_comment(question_id)
+    return render_template('question_page.html', question_data=question_data,
+                           answer_data=answer_data, question_comment_data=question_comment_data)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])

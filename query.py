@@ -18,7 +18,7 @@ def insert_data(title, message):
     question_id = get_max_id()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     query = """INSERT INTO question
-            VALUES (%s, '%s', 0, 0, '%s', '%s', 0) """ % (question_id, dt, title, message)
+            VALUES (%s, '%s', 0, 0, '%s', '%s', null) """ % (question_id, dt, title, message)
     return config.run_query(query)
 
 
@@ -71,3 +71,8 @@ def insert_question_comment(message, question_id):
             VALUES (%s, %s, null, '%s', '%s') """ % (comment_id, question_id, message, dt)
     return config.run_query(query)
 
+
+def question_comment(question_id):
+    query = """SELECT submission_time, message from comment WHERE question_id = %s """ % question_id
+    rows = config.run_query(query)
+    return rows

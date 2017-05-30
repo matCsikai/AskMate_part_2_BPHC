@@ -4,6 +4,11 @@
         <h1> {{ title }}</h1>
         <p><b> {{ message }}</b></p>
     {% endfor %}
+
+    {% for submisson_time, message in question_comment_data %}
+    <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+    {% endfor %}
+
     <hr style="height: 5px; background: #000">
     <h2>Answers</h2>
     {% for id, submisson_time, vote_number, question_id, message, image in answer_data %}
