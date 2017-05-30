@@ -3,16 +3,15 @@ from datetime import datetime
 import common
 
 
-def five_latest_questions(cursor):
-    cursor.execute("""SELECT * FROM question ORDER BY submission_time DESC
-                    LIMIT 5
-                   ;""")
-    return cursor
+def five_latest_questions():
+    query = """SELECT * FROM question ORDER BY submission_time DESC
+            LIMIT 5;"""
+    return config.run_query(query)
 
 
-def all_question(cursor):
-    cursor.execute("""SELECT * FROM question ORDER BY submission_time DESC;""")
-    return cursor
+def all_question():
+    query = """SELECT * FROM question ORDER BY submission_time DESC;"""
+    return config.run_query(query)
 
 
 def insert_data(cursor, title, message):
@@ -33,20 +32,14 @@ def insert_answer(cursor, message, question_id):
     return cursor
 
 
-def question(cursor, question_idd):
-    question_idd_int = int(question_idd)
-    cursor.execute("""
-                    SELECT * from question WHERE id = %s;""", (question_idd_int, ))
-    rows = list(cursor.fetchall())
-    return rows
+def question(question_idd):
+    query = """SELECT * from question WHERE id = %s;""" % question_idd
+    return config.run_query(query)
 
 
-def answer(cursor, question_idd):
-    question_idd_int = int(question_idd)
-    cursor.execute("""
-                    SELECT * from answer WHERE question_id = %s;""", (question_idd_int, ))
-    rows = list(cursor.fetchall())
-    return rows
+def answer(question_idd):
+    query = """SELECT * from answer WHERE question_id = %s;""" % question_idd
+    return config.run_query(query)
 
 
 def get_max_id(cursor):

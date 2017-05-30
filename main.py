@@ -8,13 +8,13 @@ app = Flask(__name__)
 
 @app.route("/")
 def home_page():
-    five_latest_questions = common.fetch_data(query.five_latest_questions(config.connection()))
+    five_latest_questions = query.five_latest_questions()
     return render_template("all_question.html", all_question=five_latest_questions, title="Homepage")
 
 
 @app.route("/list")
 def questions():
-    all_question = common.fetch_data(query.all_question(config.connection()))
+    all_question = query.all_question()
     return render_template("all_question.html", all_question=all_question, title="All question")
 
 
@@ -29,10 +29,10 @@ def add_question():
     return render_template("add_question.html",  title=title, button_name=title)
 
 
-@app.route('/question/<question_id>', methods=['GET', 'POST'])
+@app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def question_page(question_id):
-    question_data = query.question(config.connection(), question_id)
-    answer_data = query.answer(config.connection(), question_id)
+    question_data = query.question(question_id)
+    answer_data = query.answer(question_id)
     return render_template('question_page.html', question_data=question_data, answer_data=answer_data)
 
 
