@@ -13,6 +13,15 @@ def connection():
         conn.autocommit = True
         cursor = conn.cursor()
         return cursor
-    except Exception as e:
+    except psycopg2.DatabaseError as e:
         print('Cannot connect')
         print(e)
+
+
+def run_query(query):
+    cursor = connection()
+    cursor.execute(query)
+    if "SELECT" in query:
+        query_list = cursor.fetchall()
+        return query_list
+
