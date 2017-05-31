@@ -14,11 +14,17 @@ def all_question():
     return config.run_query(query)
 
 
-def insert_data(title, message):
+def all_user():
+    query = """SELECT user_name FROM user""" # needs revision
+    return config.run_query(query)
+
+
+def insert_data(title, message, user): # needs revision
     question_id = get_max_id()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = """ SELECT user_id FROM user WHERE user_name = %s""" % (user)
     query = """INSERT INTO question
-            VALUES (%s, '%s', 0, 0, '%s', '%s', null) """ % (question_id, dt, title, message)
+            VALUES (%s, '%s', 0, 0, '%s', '%s', null) """ % (question_id, dt, title, message, user_id)
     return config.run_query(query)
 
 
