@@ -26,7 +26,8 @@ def add_question():
         question_title = request.form['question_title']
         question_message = request.form['message']
         question_user = request.form['user']
-        query.insert_data(question_title, question_message, all_user)
+        query.fetch_user_id(question_user)
+        query.insert_data(question_title, question_message, question_user)
         return redirect(url_for('home_page'))
     return render_template("add_question.html",  all_user=all_user, title=title, button_name=title)
 

@@ -1,13 +1,13 @@
 {% include 'header.html' %}
 
     <form method="POST">
-        <p><label for="user">User</label><br>
-        {% for user_name in all_user %}
+        <p><label for="user">User</label>
             <select name="user" id="user">
                 <option> </option>
+                {% for user_name in all_user %}
                 <option>{{ user_name }}</option>
+                {% endfor %}
             </select>
-        {% endfor %}
         </p>
         <p>
             <label for="question_title">Question Title</label>
