@@ -76,3 +76,12 @@ def question_comment(question_id):
     query = """SELECT submission_time, message from comment WHERE question_id = %s """ % question_id
     rows = config.run_query(query)
     return rows
+
+
+def update_vote(question_id, votenumber):
+    query = """
+        UPDATE question
+        SET vote_number = '%s'
+        WHERE id = '%s';
+        """ % (votenumber, question_id)
+    return config.run_query(query)

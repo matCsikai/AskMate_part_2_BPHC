@@ -34,6 +34,16 @@ def question_page(question_id):
     question_data = query.question(question_id)
     answer_data = query.answer(question_id)
     question_comment_data = query.question_comment(question_id)
+
+    # vote
+    current_question_vote = request.args.get('current_question_vote')
+    if request.args.get('vote') == "add":
+        query.update_vote(question_id, int(current_question_vote) + 1)
+        return redirect(url_for('question_page', question_id=question_id))
+    elif request.args.get('vote') == "remove":
+        query.update_vote(question_id, int(current_question_vote) - 1)
+        return redirect(url_for('question_page', question_id=question_id))
+
     return render_template('question_page.html', question_data=question_data,
                            answer_data=answer_data, question_comment_data=question_comment_data)
 

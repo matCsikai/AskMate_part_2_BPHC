@@ -3,6 +3,8 @@
     {% for id, submisson_time, view_number, vote_number, title, message, image in question_data %}
         <h1> {{ title }}</h1>
         <p><b> {{ message }}</b></p>
+        <p><b>Vote number: {{ vote_number }}</b><br>
+        <a href="/question/{{ id }}?current_question_vote={{ vote_number }}&vote=add">Vote up</a> | <a href="/question/{{ id }}?current_question_vote={{ vote_number }}&vote=remove">Vote down</a> </p>
     {% endfor %}
 
     {% for submisson_time, message in question_comment_data %}
@@ -10,11 +12,20 @@
     {% endfor %}
 
     <hr style="height: 5px; background: #000">
-    <h2>Answers</h2>
-    {% for id, submisson_time, vote_number, question_id, message, image in answer_data %}
-        <p> {{ message }} </p>
-        <hr>
-    {% endfor %}
+    <div class="answers-container">
+        <h2>Answers</h2>
+        <div class="answers">
+            
+            {% for id, submisson_time, vote_number, question_id, message, image in answer_data %}
+            <div>
+                <p> {{ message }} </p>
+                <p><b>Vote number: {{ vote_number }}</b><br>
+                <a href="">Vote up</a> | <a href="">Vote down</a> </p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <hr style="height: 5px; background: #000">
     <a href="/question/{{ question_data[0][0] }}/new-answer" class="button">Add answer</a>
         
