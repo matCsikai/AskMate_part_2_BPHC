@@ -61,6 +61,19 @@ def add_comment_question(question_id):
                            question_id=question_id, title="Add comment to question")
 
 
+@app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
+def add_comment_answer(answer_id):
+    add_comment_answer = query.get_answer(answer_id)
+    return render_template("add_comment_answer.html", add_comment_answer=add_comment_answer,
+                           answer_id=answer_id, title="Add comment to answer")
+
+
+#@app.route('/answer/<int:answer_id>/new-comment', methods=['POST'])
+#def add_comment_answer():
+    #pass
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 

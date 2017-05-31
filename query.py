@@ -76,3 +76,9 @@ def question_comment(question_id):
     query = """SELECT submission_time, message from comment WHERE question_id = %s """ % question_id
     rows = config.run_query(query)
     return rows
+
+
+def get_answer(answer_id):
+    query = """SELECT message from answer WHERE id = %s """ % answer_id
+    rows = config.run_query(query)
+    return rows
