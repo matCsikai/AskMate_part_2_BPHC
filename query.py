@@ -88,7 +88,7 @@ def insert_answer_comment(message, answer_id):
     comment_id = get_max_id_comment()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     query = """INSERT INTO comment
-            VALUES (%s, %s, null, '%s', '%s') """ % (comment_id, answer_id, message, dt)
+            VALUES (%s, null, %s, '%s', '%s') """ % (comment_id, answer_id, message, dt)
     return config.run_query(query)
 
 
@@ -96,3 +96,9 @@ def question_id_from_answer(answer_id):
     query = """SELECT question_id from answer WHERE id = %s """ % answer_id
     rows = config.run_query(query)
     return int(rows[0][0])
+
+
+def answer_comment(question_id):
+    query = """SELECT submission_time, message from comment WHERE answer_id = %s """ % answer_id
+    rows = config.run_query(query)
+    return rows
