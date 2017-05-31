@@ -35,13 +35,23 @@ def question_page(question_id):
     answer_data = query.answer(question_id)
     question_comment_data = query.question_comment(question_id)
 
-    # vote
+    # vote question
     current_question_vote = request.args.get('current_question_vote')
     if request.args.get('vote') == "add":
-        query.update_vote(question_id, int(current_question_vote) + 1)
+        query.update_vote("question", question_id, int(current_question_vote) + 1)
         return redirect(url_for('question_page', question_id=question_id))
     elif request.args.get('vote') == "remove":
-        query.update_vote(question_id, int(current_question_vote) - 1)
+        query.update_vote("question", question_id, int(current_question_vote) - 1)
+        return redirect(url_for('question_page', question_id=question_id))
+
+    # vote answer
+    current_answer_vote = request.args.get('current_answer_vote')
+    answer_id = request.args.get('answer_id')
+    if request.args.get('vote_answer') == "add":
+        query.update_vote("answer", int(answer_id), int(current_answer_vote) + 1)
+        return redirect(url_for('question_page', question_id=question_id))
+    elif request.args.get('vote_answer') == "remove":
+        query.update_vote("answer", int(answer_id), int(current_answer_vote) - 1)
         return redirect(url_for('question_page', question_id=question_id))
 
     return render_template('question_page.html', question_data=question_data,

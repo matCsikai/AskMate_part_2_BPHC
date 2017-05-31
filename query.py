@@ -36,7 +36,7 @@ def question(question_idd):
 
 
 def answer(question_idd):
-    query = """SELECT * from answer WHERE question_id = %s;""" % question_idd
+    query = """SELECT * from answer WHERE question_id = %s ORDER BY id;""" % question_idd
     return config.run_query(query)
 
 
@@ -78,10 +78,10 @@ def question_comment(question_id):
     return rows
 
 
-def update_vote(question_id, votenumber):
+def update_vote(table, data_id, votenumber):
     query = """
-        UPDATE question
-        SET vote_number = '%s'
-        WHERE id = '%s';
-        """ % (votenumber, question_id)
+        UPDATE %s
+        SET vote_number = %s
+        WHERE id = %s;
+        """ % (table, votenumber, data_id)
     return config.run_query(query)
