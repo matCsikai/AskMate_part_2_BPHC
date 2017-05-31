@@ -61,6 +61,16 @@ def add_comment_question(question_id):
                            question_id=question_id, title="Add comment to question")
 
 
+@app.route('/registration', methods=['GET', 'POST'])
+def add_new_user():
+    title = "User registration"
+    if request.method == "POST":
+        user = request.form['user']
+        insert_username = query.insert_username(user)
+        return redirect(url_for('home_page'))
+    return render_template("user_registration.html", title=title, button_name=title)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
