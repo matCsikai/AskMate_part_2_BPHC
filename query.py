@@ -76,3 +76,10 @@ def question_comment(question_id):
     query = """SELECT submission_time, message from comment WHERE question_id = %s """ % question_id
     rows = config.run_query(query)
     return rows
+
+
+def insert_username(user):
+    query = """INSERT INTO users (username)
+            VALUES ('%s') """ % user
+    return config.run_query(query)
+
