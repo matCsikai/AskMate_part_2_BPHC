@@ -89,7 +89,7 @@ def insert_username(user):
 
 
 def all_user():
-    query = """SELECT username, registration_time, reputation
+    query = """SELECT username, to_char(registration_time, 'YYYY-MM-DD HH24:MI'), reputation
     FROM users
     ORDER BY reputation DESC;"""
     return config.run_query(query)
