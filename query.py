@@ -91,3 +91,8 @@ def insert_answer_comment(message, answer_id):
             VALUES (%s, %s, null, '%s', '%s') """ % (comment_id, answer_id, message, dt)
     return config.run_query(query)
 
+
+def question_id_from_answer(answer_id):
+    query = """SELECT question_id from answer WHERE id = %s """ % answer_id
+    rows = config.run_query(query)
+    return int(rows[0][0])
