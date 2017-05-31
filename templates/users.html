@@ -1,0 +1,28 @@
+{% include 'header.html' %}
+
+{% if all_user|length == 0 %}
+        <h2>
+            There is no registrated user yet ...
+        </h2>
+
+{% else %}
+
+        <table>
+            <thead>
+                <tr>
+                <td>Username</td>
+                <td>Registration time</td>
+                <td>Reputation</td>
+                </tr>        
+            </thead>
+            {% for row in all_user %}
+                <tr>
+                    {% for column in row %}
+                        <td>{{ column }} </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+{% endif %}
+
+{% include 'footer.html' %}
