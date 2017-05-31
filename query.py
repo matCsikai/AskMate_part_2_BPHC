@@ -82,3 +82,12 @@ def get_answer(answer_id):
     query = """SELECT message from answer WHERE id = %s """ % answer_id
     rows = config.run_query(query)
     return rows
+
+
+def insert_answer_comment(message, answer_id):
+    comment_id = get_max_id_comment()
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    query = """INSERT INTO comment
+            VALUES (%s, %s, null, '%s', '%s') """ % (comment_id, answer_id, message, dt)
+    return config.run_query(query)
+
