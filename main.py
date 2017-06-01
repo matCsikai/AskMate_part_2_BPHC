@@ -23,6 +23,7 @@ def questions():
 def add_question():
     title = "Ask question"
     list_all_user = query.list_all_user()
+
     if request.method == "POST":
         question_title = request.form['question_title']
         question_message = request.form['message']
@@ -38,6 +39,7 @@ def question_page(question_id):
     question_data = query.question(question_id)
     answer_data = query.answer(question_id)
     question_comment_data = query.question_comment(question_id)
+    answer_comment_data = query.answer_comment(question_id)
 
     # vote question
     question_user_id = request.args.get('question_user_id')
@@ -64,11 +66,10 @@ def question_page(question_id):
         query.update_reputation("-", 2, int(answer_user_id))
         return redirect(url_for('question_page', question_id=question_id))
 
-    # answer_comment_data = query.answer_comment(answer_id)
     return render_template('question_page.html', question_data=question_data, answer_data=answer_data,
-                           question_comment_data=question_comment_data)
+                           question_comment_data=question_comment_data, answer_comment_data=answer_comment_data)
 
-
+  
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
     title = "Add answer"
@@ -91,13 +92,9 @@ def add_comment_question(question_id):
         comment_user = request.form['user']
         insert_question_comment = query.insert_question_comment(comment_message, question_id, comment_user)
         query.fetch_user_id(comment_user)
-        # display question list page
-
-        all_question = query.all_question()
-        return render_template("all_question.html", all_question=all_question, title="All question")
+        return redirect(url_for('question_page', question_id=question_id))
     return render_template("add_comment_question.html", add_comment_question=add_comment_question,
                            question_id=question_id, list_all_user=list_all_user, title="Add comment to question")
-
 
 @app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
 def add_comment_answer(answer_id):
@@ -133,7 +130,7 @@ def users():
     all_user = query.all_user()
     return render_template("users.html", all_user=all_user, title="All registered user")
 
-
+  
 @app.errorhandler(404)
 def page_not_found(e):
     title = "404 - This page not found"

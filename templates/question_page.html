@@ -4,12 +4,17 @@
         <h1> {{ title }}</h1>
         <p><b> {{ message }}</b></p>
         <p><b>Vote number: {{ vote_number }}</b><br>
+
+        <!-- <a href="/question/{{ id }}?current_question_vote={{ vote_number }}&vote=add"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> | <a href="/question/{{ id }}?current_question_vote={{ vote_number }}&vote=remove"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> </p> -->
+        
         <a href="/question/{{ id }}?question_user_id={{ user_id }}&current_question_vote={{ vote_number }}&vote=add"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> | 
         <a href="/question/{{ id }}?question_user_id={{ user_id }}&current_question_vote={{ vote_number }}&vote=remove"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> </p>
-    {% endfor %}
-
-    {% for submisson_time, message in question_comment_data %}
-    <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+   
+        {% for submisson_time, message in question_comment_data %}
+        <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+        {% endfor %}  
+        
+        <a href="/question/{{ id }}/new-comment" class="button">Add comment</a>
     {% endfor %}
 
     <hr style="height: 5px; background: #000">
@@ -21,8 +26,18 @@
             <div>
                 <p> {{ message }} </p>
                 <p><b>Vote number: {{ vote_number }}</b><br>
+
+                <!-- <a href="/question/{{ question_id }}?answer_id={{ id }}&current_answer_vote={{ vote_number }}&vote_answer=add"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> | <a href="/question/{{ question_id }}?answer_id={{ id }}&current_answer_vote={{ vote_number }}&vote_answer=remove"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> </p> -->
+                
                 <a href="/question/{{ question_id }}?answer_user_id={{ user_id }}&answer_id={{ id }}&current_answer_vote={{ vote_number }}&vote_answer=add"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> | 
                 <a href="/question/{{ question_id }}?answer_user_id={{ user_id }}&answer_id={{ id }}&current_answer_vote={{ vote_number }}&vote_answer=remove"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> </p>
+
+                {% for submisson_time, message, answer_id, question_id in answer_comment_data %}
+                    {% if id == answer_id %}
+                    <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+                    {% endif %}
+                {% endfor %}
+     
                 <a href="/answer/{{ id }}/new-comment" class="button">Add comment</a>
             </div>
             {% endfor %}
