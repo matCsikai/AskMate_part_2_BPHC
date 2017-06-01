@@ -8,14 +8,12 @@
             <td>Id</td>
             <td>Submission time</td>
             <td>Title</td>
-            <td>Add comment</td>
         </tr>
         {% for id, submisson_time, view_number, vote_number, title, message, image, user_id in all_question %}
         <tr>
             <td> {{ id }} </td>
             <td> {{ submisson_time }} </td>
             <td> <a href="/question/{{ id }}"> {{title }} </a> </td>
-            <td> <a href="/question/{{ id }}/new-comment" class="button" style="display: block; max-width: 100px; text-align:center; background: #9999FF"> Add comment</a> </td>
         </tr>
         {% endfor %}
     </table>
