@@ -21,6 +21,13 @@
                 <p> {{ message }} </p>
                 <p><b>Vote number: {{ vote_number }}</b><br>
                 <a href="/question/{{ question_id }}?answer_id={{ id }}&current_answer_vote={{ vote_number }}&vote_answer=add"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> | <a href="/question/{{ question_id }}?answer_id={{ id }}&current_answer_vote={{ vote_number }}&vote_answer=remove"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> </p>
+                
+                {% for submisson_time, message, answer_id, question_id in answer_comment_data %}
+                    {% if id == answer_id %}
+                    <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+                    {% endif %}
+                {% endfor %}
+                
                 <a href="/answer/{{ id }}/new-comment" class="button">Add comment</a>
             </div>
             {% endfor %}

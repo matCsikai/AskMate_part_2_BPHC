@@ -32,6 +32,7 @@ def insert_data(title, message, user): # needs revision
             VALUES (%s, '%s', 0, 0, '%s', '%s', null, '%d') """ % (question_id, dt, title, message, user_id)
     return config.run_query(query)
 
+
 def fetch_user_id(user):
     query = """ SELECT id FROM users WHERE username = '%s';""" % (user)
     return config.run_query(query)
@@ -92,6 +93,7 @@ def question_comment(question_id):
     rows = config.run_query(query)
     return rows
 
+
 def update_vote(table, data_id, votenumber):
     query = """
         UPDATE %s
@@ -119,6 +121,15 @@ def question_id_from_answer(answer_id):
     query = """SELECT question_id from answer WHERE id = %s """ % answer_id
     rows = config.run_query(query)
     return int(rows[0][0])
+
+
+def answer_comment(question_id):
+    query = """SELECT comment.submission_time, comment.message, comment.answer_id, answer.question_id FROM comment
+            JOIN answer ON comment.answer_id= answer.id
+            WHERE answer.question_id = %s
+            """ % (question_id)
+    rows = config.run_query(query)
+    return rows
 
 
 def insert_username(user):

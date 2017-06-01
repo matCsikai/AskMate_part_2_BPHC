@@ -38,6 +38,7 @@ def question_page(question_id):
     question_data = query.question(question_id)
     answer_data = query.answer(question_id)
     question_comment_data = query.question_comment(question_id)
+    answer_comment_data = query.answer_comment(question_id)
 
     # vote question
     current_question_vote = request.args.get('current_question_vote')
@@ -58,10 +59,8 @@ def question_page(question_id):
         query.update_vote("answer", int(answer_id), int(current_answer_vote) - 1)
         return redirect(url_for('question_page', question_id=question_id))
 
-    #answer_comment_data = query.answer_comment(answer_id)
     return render_template('question_page.html', question_data=question_data, answer_data=answer_data,
-                           question_comment_data=question_comment_data)
-
+                           question_comment_data=question_comment_data, answer_comment_data=answer_comment_data)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -81,12 +80,10 @@ def add_comment_question(question_id):
         comment_message = request.form['message']
         insert_question_comment = query.insert_question_comment(comment_message, question_id)
         # display question list page
-
         all_question = query.all_question()
         return render_template("all_question.html", all_question=all_question, title="All question")
     return render_template("add_comment_question.html", add_comment_question=add_comment_question,
                            question_id=question_id, title="Add comment to question")
-
 
 
 @app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
@@ -103,6 +100,7 @@ def add_comment_answer_post(answer_id):
     question_id_from_answer = query.question_id_from_answer(answer_id)
     return redirect(url_for('question_page', question_id=question_id_from_answer))
 
+
 @app.route('/registration', methods=['GET', 'POST'])
 def add_new_user():
     title = "User registration"
@@ -117,9 +115,8 @@ def add_new_user():
 @app.route("/users")
 def users():
     all_user = query.all_user()
-    
-    return render_template("users.html", all_user=all_user, title="All registered user")
 
+    return render_template("users.html", all_user=all_user, title="All registered user")
 
 
 if __name__ == "__main__":
