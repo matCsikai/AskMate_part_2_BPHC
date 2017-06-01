@@ -1,7 +1,7 @@
 {% include 'header.html' %}
     <form method="POST">    
         <p><label for="user">User</label>
-            <select name="user" id="user">
+            <select name="user" id="user" required>
                 <option> </option>
                 {% for user_name in list_all_user %}
                 <option>{{ user_name }}</option>

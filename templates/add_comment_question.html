@@ -4,6 +4,14 @@
     <p>{{ add_comment_question[0][1] }}</p>
     <hr>
     <form action='/question/{{ question_id }}/new-comment' method="POST">
+        <p><label for="user">User</label>
+            <select name="user" id="user" required>
+                <option> </option>
+                {% for user_name in list_all_user %}
+                <option>{{ user_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
         <label for="answer"></label>
         <textarea name="message" id="" cols="50" rows="10" minlength="10"></textarea>
         <input type="submit" value="Send comment" class="button">

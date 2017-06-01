@@ -80,21 +80,25 @@ def new_answer(question_id):
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_question(question_id):
     add_comment_question = query.get_question(question_id)
+    list_all_user = query.list_all_user()
     if request.method == 'POST':
         comment_message = request.form['message']
-        insert_question_comment = query.insert_question_comment(comment_message, question_id)
+        comment_user = request.form['user']
+        insert_question_comment = query.insert_question_comment(comment_message, question_id, comment_user)
+        query.fetch_user_id(comment_user)
         # display question list page
 
         all_question = query.all_question()
         return render_template("all_question.html", all_question=all_question, title="All question")
     return render_template("add_comment_question.html", add_comment_question=add_comment_question,
-                           question_id=question_id, title="Add comment to question")
+                           question_id=question_id, list_all_user=list_all_user, title="Add comment to question")
 
 
 
 @app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
 def add_comment_answer(answer_id):
     add_comment_answer = query.get_answer(answer_id)
+    list_all_user = query.list_all_user()
     return render_template("add_comment_answer.html", add_comment_answer=add_comment_answer,
                            answer_id=answer_id, title="Add comment to answer")
 
