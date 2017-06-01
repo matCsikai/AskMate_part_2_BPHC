@@ -1,0 +1,13 @@
+{% include 'header.html' %}
+
+
+    <form method="POST">
+        <p>
+            <label for="user">Type your username</label>
+            <input size="50" type="text" id="user" name="user" value="{{ user }}" required>
+        </p>
+             <input type="submit" value="{{ button_name }}" class="button" id="{{ button_name }}">
+
+             
+{% include 'footer.html' %}
+

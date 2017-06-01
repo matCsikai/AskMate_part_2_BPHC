@@ -1,6 +1,7 @@
 import config
 from datetime import datetime
 import common
+import psycopg2
 
 
 def five_latest_questions():
@@ -14,11 +15,25 @@ def all_question():
     return config.run_query(query)
 
 
-def insert_data(title, message):
+def all_user():
+    query = """SELECT username FROM users;""" # needs revision
+    rows = config.run_query(query)
+    user_names = []
+    for name in rows:
+        user_names.append(name[0])
+    return user_names
+
+
+def insert_data(title, message, user): # needs revision
     question_id = get_max_id()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = fetch_user_id(user)[0][0]
     query = """INSERT INTO question
-            VALUES (%s, '%s', 0, 0, '%s', '%s', null) """ % (question_id, dt, title, message)
+            VALUES (%s, '%s', 0, 0, '%s', '%s', null, '%d') """ % (question_id, dt, title, message, user_id)
+    return config.run_query(query)
+
+def fetch_user_id(user):
+    query = """ SELECT id FROM users WHERE username = '%s';""" % (user)
     return config.run_query(query)
 
 
@@ -78,6 +93,7 @@ def question_comment(question_id):
     return rows
 
 
+
 def get_answer(answer_id):
     query = """SELECT message from answer WHERE id = %s """ % answer_id
     rows = config.run_query(query)
@@ -96,4 +112,21 @@ def question_id_from_answer(answer_id):
     query = """SELECT question_id from answer WHERE id = %s """ % answer_id
     rows = config.run_query(query)
     return int(rows[0][0])
+
+
+def insert_username(user):
+    try:
+        query = """INSERT INTO users (username)
+                VALUES ('%s') """ % user
+        return config.run_query(query)
+    except psycopg2.IntegrityError as error:
+        print("The username is invalid or already exist.")
+
+
+def all_user():
+    query = """SELECT username, to_char(registration_time, 'YYYY-MM-DD HH24:MI'), reputation
+    FROM users
+    ORDER BY reputation DESC;"""
+    return config.run_query(query)
+
 

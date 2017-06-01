@@ -3,6 +3,7 @@ import query
 import common
 import config
 
+
 app = Flask(__name__)
 
 
@@ -21,12 +22,15 @@ def questions():
 @app.route("/question/new", methods=['GET', 'POST'])
 def add_question():
     title = "Ask question"
+    all_user = query.all_user() # needs revision
     if request.method == "POST":
         question_title = request.form['question_title']
         question_message = request.form['message']
-        query.insert_data(question_title, question_message)
+        question_user = request.form['user']
+        query.fetch_user_id(question_user)
+        query.insert_data(question_title, question_message, question_user)
         return redirect(url_for('home_page'))
-    return render_template("add_question.html",  title=title, button_name=title)
+    return render_template("add_question.html",  all_user=all_user, title=title, button_name=title)
 
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
@@ -63,6 +67,7 @@ def add_comment_question(question_id):
                            question_id=question_id, title="Add comment to question")
 
 
+
 @app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
 def add_comment_answer(answer_id):
     add_comment_answer = query.get_answer(answer_id)
@@ -76,6 +81,24 @@ def add_comment_answer_post(answer_id):
     insert_answer_comment = query.insert_answer_comment(comment_message, answer_id)
     question_id_from_answer = query.question_id_from_answer(answer_id)
     return redirect(url_for('question_page', question_id=question_id_from_answer))
+
+@app.route('/registration', methods=['GET', 'POST'])
+def add_new_user():
+    title = "User registration"
+    button = "Send the registration"
+    if request.method == "POST":
+        user = request.form['user']
+        insert_username = query.insert_username(user)
+        return redirect(url_for('home_page'))
+    return render_template("user_registration.html", title=title, button_name=button)
+
+
+@app.route("/users")
+def users():
+    all_user = query.all_user()
+    
+    return render_template("users.html", all_user=all_user, title="All registered user")
+
 
 
 if __name__ == "__main__":
