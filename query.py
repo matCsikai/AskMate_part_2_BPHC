@@ -16,7 +16,7 @@ def all_question():
 
 
 def all_user():
-    query = """SELECT username FROM users;""" # needs revision
+    query = """SELECT username FROM users;"""
     rows = config.run_query(query)
     user_names = []
     for name in rows:
@@ -24,7 +24,7 @@ def all_user():
     return user_names
 
 
-def insert_data(title, message, user): # needs revision
+def insert_data(title, message, user):
     question_id = get_max_id()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     user_id = fetch_user_id(user)[0][0]

@@ -22,7 +22,7 @@ def questions():
 @app.route("/question/new", methods=['GET', 'POST'])
 def add_question():
     title = "Ask question"
-    all_user = query.all_user() # needs revision
+    all_user = query.all_user()
     if request.method == "POST":
         question_title = request.form['question_title']
         question_message = request.form['message']
@@ -79,9 +79,8 @@ def add_comment_question(question_id):
     if request.method == 'POST':
         comment_message = request.form['message']
         insert_question_comment = query.insert_question_comment(comment_message, question_id)
-        # display question list page
-        all_question = query.all_question()
-        return render_template("all_question.html", all_question=all_question, title="All question")
+        return redirect(url_for('question_page', question_id=question_id))
+        
     return render_template("add_comment_question.html", add_comment_question=add_comment_question,
                            question_id=question_id, title="Add comment to question")
 
