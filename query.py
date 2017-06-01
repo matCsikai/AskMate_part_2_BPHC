@@ -1,6 +1,7 @@
 import config
 from datetime import datetime
 import common
+import psycopg2
 
 
 def five_latest_questions():
@@ -90,3 +91,20 @@ def question_comment(question_id):
     query = """SELECT submission_time, message from comment WHERE question_id = %s """ % question_id
     rows = config.run_query(query)
     return rows
+
+
+def insert_username(user):
+    try:
+        query = """INSERT INTO users (username)
+                VALUES ('%s') """ % user
+        return config.run_query(query)
+    except psycopg2.IntegrityError as error:
+        print("The username is invalid or already exist.")
+
+
+def all_user():
+    query = """SELECT username, to_char(registration_time, 'YYYY-MM-DD HH24:MI'), reputation
+    FROM users
+    ORDER BY reputation DESC;"""
+    return config.run_query(query)
+

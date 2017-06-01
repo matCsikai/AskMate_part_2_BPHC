@@ -3,6 +3,7 @@ import query
 import common
 import config
 
+
 app = Flask(__name__)
 
 
@@ -62,6 +63,24 @@ def add_comment_question(question_id):
         return render_template("all_question.html", all_question=all_question, title="All question")
     return render_template("add_comment_question.html", add_comment_question=add_comment_question,
                            question_id=question_id, title="Add comment to question")
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def add_new_user():
+    title = "User registration"
+    button = "Send the registration"
+    if request.method == "POST":
+        user = request.form['user']
+        insert_username = query.insert_username(user)
+        return redirect(url_for('home_page'))
+    return render_template("user_registration.html", title=title, button_name=button)
+
+
+@app.route("/users")
+def users():
+    all_user = query.all_user()
+    
+    return render_template("users.html", all_user=all_user, title="All registered user")
 
 
 if __name__ == "__main__":
