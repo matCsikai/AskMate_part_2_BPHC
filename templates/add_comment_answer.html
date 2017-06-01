@@ -1,9 +1,9 @@
 {% include 'header.html' %}
 
-    <h2>{{ add_comment_question[0][0] }}</h2>
-    <p>{{ add_comment_question[0][1] }}</p>
+    
+    <p>{{ add_comment_answer[0][0] }}</p>
     <hr>
-    <form action='/question/{{ question_id }}/new-comment' method="POST">
+    <form action='/answer/{{ answer_id }}/new-comment' method="POST">
         <label for="answer"></label>
         <textarea name="message" id="" cols="50" rows="10" minlength="10"></textarea>
         <input type="submit" value="Send comment" class="button">

@@ -12,9 +12,12 @@
     <hr style="height: 5px; background: #000">
     <h2>Answers</h2>
     {% for id, submisson_time, vote_number, question_id, message, image in answer_data %}
-        <p> {{ message }} </p>
+        <p> {{ message }} <a href="/answer/{{ id }}/new-comment" class="button">Add comment</a></p>
         <hr>
     {% endfor %}
+
+
+
     <hr style="height: 5px; background: #000">
     <a href="/question/{{ question_data[0][0] }}/new-answer" class="button">Add answer</a>
         
