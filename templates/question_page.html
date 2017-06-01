@@ -17,7 +17,7 @@
     <div class="answers-container">
         <h2>Answers</h2>
         <div class="answers">
-            {% for id, submisson_time, vote_number, question_id, message, image, answer_user_id in answer_data %}
+            {% for id, submisson_time, vote_number, question_id, message, image, user_id in answer_data %}
             <div>
                 <p> {{ message }} </p>
                 <p><b>Vote number: {{ vote_number }}</b><br>
