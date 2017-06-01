@@ -103,6 +103,7 @@ def add_comment_answer_post(answer_id):
     question_id_from_answer = query.question_id_from_answer(answer_id)
     return redirect(url_for('question_page', question_id=question_id_from_answer))
 
+
 @app.route('/registration', methods=['GET', 'POST'])
 def add_new_user():
     title = "User registration"
@@ -117,8 +118,12 @@ def add_new_user():
 @app.route("/users")
 def users():
     all_user = query.all_user()
-    
     return render_template("users.html", all_user=all_user, title="All registered user")
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 
