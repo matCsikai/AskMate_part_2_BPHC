@@ -67,11 +67,14 @@ def question_page(question_id):
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
     title = "Add answer"
+    list_all_user = query.list_all_user()
     if request.method == "POST":
         answer_message = request.form['message']
-        query.insert_answer(answer_message, question_id)
+        answer_user = request.form['user']
+        query.insert_answer(answer_message, question_id, answer_user)
+        query.fetch_user_id(answer_user)
         return redirect(url_for('question_page', question_id=question_id))
-    return render_template("add_answer.html",  title=title, button_name=title)
+    return render_template("add_answer.html",  list_all_user=list_all_user, title=title, button_name=title)
 
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])

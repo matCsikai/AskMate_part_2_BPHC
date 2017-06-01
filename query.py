@@ -18,9 +18,7 @@ def all_question():
 def list_all_user():
     query = """SELECT username FROM users"""
     rows = config.run_query(query)
-    print(rows)
     user_names = []
-    print(user_names)
     for name in rows:
         user_names.append(name[0])
     return user_names
@@ -39,11 +37,12 @@ def fetch_user_id(user):
     return config.run_query(query)
 
 
-def insert_answer(message, question_id):
+def insert_answer(message, question_id, user):
     answer_id = get_max_id_answer()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = fetch_user_id(user)[0][0]
     query = """INSERT INTO answer
-            VALUES (%s, '%s', 0, '%s', '%s', 0) """ % (answer_id, dt, question_id, message)
+            VALUES (%s, '%s', 0, '%s', '%s', 0, '%d') """ % (answer_id, dt, question_id, message, user_id)
     return config.run_query(query)
 
 
