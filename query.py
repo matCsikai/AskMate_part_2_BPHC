@@ -97,8 +97,3 @@ def question_id_from_answer(answer_id):
     rows = config.run_query(query)
     return int(rows[0][0])
 
-
-def answer_comment(question_id):
-    query = """SELECT submission_time, message from comment WHERE answer_id = %s """ % answer_id
-    rows = config.run_query(query)
-    return rows

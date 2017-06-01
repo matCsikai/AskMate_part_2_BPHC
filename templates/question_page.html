@@ -13,11 +13,6 @@
     <h2>Answers</h2>
     {% for id, submisson_time, vote_number, question_id, message, image in answer_data %}
         <p> {{ message }} <a href="/answer/{{ id }}/new-comment" class="button">Add comment</a></p>
-
-
-        <!--{% for submisson_time, message in answer_comment_data %}
-    <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
-    {% endfor %}-->
         <hr>
     {% endfor %}
 
