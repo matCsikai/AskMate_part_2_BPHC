@@ -129,7 +129,8 @@ def insert_username(user):
                 VALUES ('%s') """ % user
         return config.run_query(query)
     except psycopg2.IntegrityError as error:
-        print("The username is invalid or already exist.")
+        message = "The username is invalid or already exist."
+        print(message)
 
 
 def all_user():

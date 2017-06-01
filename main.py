@@ -123,8 +123,14 @@ def users():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    title = "404 - This page not found"
+    return render_template('error.html', title=title), 404
 
+
+@app.errorhandler(500)
+def page_not_found(e):
+    title = "500 - Internal Server Error"
+    return render_template('error.html', title=title), 500
 
 
 if __name__ == "__main__":
