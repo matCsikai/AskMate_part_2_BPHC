@@ -13,3 +13,4 @@ INSERT INTO users (username, reputation) VALUES ('susuasarkany', 40);
 INSERT INTO users (username, reputation) VALUES ('hipsztermertbenceakarta', -22);
 INSERT INTO users (username, reputation) VALUES ('vizipok88', -2);
 INSERT INTO users (username, reputation) VALUES ('brucewayne', 0);
+
