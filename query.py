@@ -51,7 +51,7 @@ def question(question_idd):
 
 
 def answer(question_idd):
-    query = """SELECT * from answer WHERE question_id = %s;""" % question_idd
+    query = """SELECT * from answer WHERE question_id = %s ORDER BY id;""" % question_idd
     return config.run_query(query)
 
 
@@ -92,6 +92,13 @@ def question_comment(question_id):
     rows = config.run_query(query)
     return rows
 
+def update_vote(table, data_id, votenumber):
+    query = """
+        UPDATE %s
+        SET vote_number = %s
+        WHERE id = %s;
+        """ % (table, votenumber, data_id)
+    return config.run_query(query)
 
 
 def get_answer(answer_id):
@@ -128,5 +135,4 @@ def all_user():
     FROM users
     ORDER BY reputation DESC;"""
     return config.run_query(query)
-
 

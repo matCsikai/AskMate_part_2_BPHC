@@ -6,6 +6,9 @@
 h1 {
     font-size: 21px;
 }
+h2 {
+    font-size: 18px;
+}
 table {
     border: 2px solid #000;
     border-collapse: collapse;
@@ -62,4 +65,17 @@ a:hover {
     color: #fff;
     font-size: 22px;
     padding: 10px 20px
+}
+.container {
+    width: 960px;
+    margin: 0 auto;
+}
+.answers > div {
+    padding: 5px 10px
+}
+.answers > div:nth-child(1n+1) {
+    background-color: rgba(255, 0, 224, 0.39)
+}
+.answers > div:nth-child(2n+1) {
+    background-color: rgba(145, 0, 255, 0.39)
 }
