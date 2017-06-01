@@ -94,6 +94,7 @@ def question_comment(question_id):
     rows = config.run_query(query)
     return rows
 
+
 def update_vote(table, data_id, votenumber):
     query = """
         UPDATE %s
@@ -109,11 +110,12 @@ def get_answer(answer_id):
     return rows
 
 
-def insert_answer_comment(message, answer_id):
+def insert_answer_comment(message, answer_id, user):
     comment_id = get_max_id_comment()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = fetch_user_id(user)[0][0]
     query = """INSERT INTO comment
-            VALUES (%s, null, %s, '%s', '%s') """ % (comment_id, answer_id, message, dt)
+            VALUES (%s, null, %s, '%s', '%s', '%d') """ % (comment_id, answer_id, message, dt, user_id)
     return config.run_query(query)
 
 
