@@ -5,10 +5,12 @@
         <p><b> {{ message }}</b></p>
         <p><b>Vote number: {{ vote_number }}</b><br>
         <a href="/question/{{ id }}?current_question_vote={{ vote_number }}&vote=add"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> | <a href="/question/{{ id }}?current_question_vote={{ vote_number }}&vote=remove"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> </p>
-    {% endfor %}
-
-    {% for submisson_time, message in question_comment_data %}
-    <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+        
+        {% for submisson_time, message in question_comment_data %}
+        <p style="padding:0 0 0 30px"> {{ submisson_time }} {{ message }}</p>
+        {% endfor %}  
+        
+        <a href="/question/{{ id }}/new-comment" class="button">Add comment</a>
     {% endfor %}
 
     <hr style="height: 5px; background: #000">
