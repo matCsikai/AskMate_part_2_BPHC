@@ -125,9 +125,19 @@ def add_new_user():
 @app.route("/users")
 def users():
     all_user = query.all_user()
-    
     return render_template("users.html", all_user=all_user, title="All registered user")
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    title = "404 - This page not found"
+    return render_template('error.html', title=title), 404
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+    title = "500 - Internal Server Error"
+    return render_template('error.html', title=title), 500
 
 
 if __name__ == "__main__":
