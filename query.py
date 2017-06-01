@@ -89,7 +89,8 @@ def insert_question_comment(message, question_id):
 
 
 def question_comment(question_id):
-    query = """SELECT submission_time, message from comment WHERE question_id = %s """ % question_id
+    query = """SELECT submission_time, message from comment WHERE question_id = %s
+            ORDER BY submission_time DESC """ % question_id
     rows = config.run_query(query)
     return rows
 
@@ -127,7 +128,7 @@ def answer_comment(question_id):
     query = """SELECT comment.submission_time, comment.message, comment.answer_id, answer.question_id FROM comment
             JOIN answer ON comment.answer_id= answer.id
             WHERE answer.question_id = %s
-            """ % (question_id)
+            ORDER BY comment.submission_time DESC""" % (question_id)
     rows = config.run_query(query)
     return rows
 
