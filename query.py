@@ -94,6 +94,7 @@ def question_comment(question_id):
     rows = config.run_query(query)
     return rows
 
+
 def update_vote(table, data_id, votenumber):
     query = """
         UPDATE %s
@@ -138,3 +139,11 @@ def all_user():
     ORDER BY reputation DESC;"""
     return config.run_query(query)
 
+
+def update_reputation(operator, value, user_id):
+    query = """
+        UPDATE users
+        SET reputation = reputation %s %s
+        WHERE id = %s;
+        """ % (operator, value, user_id)
+    return config.run_query(query)
