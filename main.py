@@ -22,15 +22,15 @@ def questions():
 @app.route("/question/new", methods=['GET', 'POST'])
 def add_question():
     title = "Ask question"
-    all_user = query.all_user() # needs revision
+    list_all_user = query.list_all_user()
     if request.method == "POST":
         question_title = request.form['question_title']
         question_message = request.form['message']
         question_user = request.form['user']
-        query.fetch_user_id(question_user)
         query.insert_data(question_title, question_message, question_user)
+        query.fetch_user_id(question_user)
         return redirect(url_for('home_page'))
-    return render_template("add_question.html",  all_user=all_user, title=title, button_name=title)
+    return render_template("add_question.html",  list_all_user=list_all_user, title=title, button_name=title)
 
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])

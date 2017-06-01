@@ -15,16 +15,18 @@ def all_question():
     return config.run_query(query)
 
 
-def all_user():
-    query = """SELECT username FROM users;""" # needs revision
+def list_all_user():
+    query = """SELECT username FROM users"""
     rows = config.run_query(query)
+    print(rows)
     user_names = []
+    print(user_names)
     for name in rows:
         user_names.append(name[0])
     return user_names
 
 
-def insert_data(title, message, user): # needs revision
+def insert_data(title, message, user):
     question_id = get_max_id()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     user_id = fetch_user_id(user)[0][0]
