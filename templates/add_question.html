@@ -4,7 +4,7 @@
         <p><label for="user">User</label>
             <select name="user" id="user">
                 <option> </option>
-                {% for user_name in all_user %}
+                {% for user_name in list_all_user %}
                 <option>{{ user_name }}</option>
                 {% endfor %}
             </select>
