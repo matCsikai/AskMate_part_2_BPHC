@@ -58,10 +58,9 @@ def question_page(question_id):
         query.update_vote("answer", int(answer_id), int(current_answer_vote) - 1)
         return redirect(url_for('question_page', question_id=question_id))
 
-    #answer_comment_data = query.answer_comment(answer_id)
+    # answer_comment_data = query.answer_comment(answer_id)
     return render_template('question_page.html', question_data=question_data, answer_data=answer_data,
                            question_comment_data=question_comment_data)
-
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -94,21 +93,23 @@ def add_comment_question(question_id):
                            question_id=question_id, list_all_user=list_all_user, title="Add comment to question")
 
 
-
 @app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
 def add_comment_answer(answer_id):
     add_comment_answer = query.get_answer(answer_id)
     list_all_user = query.list_all_user()
     return render_template("add_comment_answer.html", add_comment_answer=add_comment_answer,
-                           answer_id=answer_id, title="Add comment to answer")
+                           answer_id=answer_id, list_all_user=list_all_user, title="Add comment to answer")
 
 
 @app.route('/answer/<int:answer_id>/new-comment', methods=['POST'])
 def add_comment_answer_post(answer_id):
     comment_message = request.form['message']
-    insert_answer_comment = query.insert_answer_comment(comment_message, answer_id)
+    comment_user = request.form['user']
+    query.fetch_user_id(comment_user)
+    insert_answer_comment = query.insert_answer_comment(comment_message, answer_id, comment_user)
     question_id_from_answer = query.question_id_from_answer(answer_id)
     return redirect(url_for('question_page', question_id=question_id_from_answer))
+
 
 @app.route('/registration', methods=['GET', 'POST'])
 def add_new_user():
