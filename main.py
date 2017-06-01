@@ -22,15 +22,16 @@ def questions():
 @app.route("/question/new", methods=['GET', 'POST'])
 def add_question():
     title = "Ask question"
-    all_user = query.all_user()
+    list_all_user = query.list_all_user()
+
     if request.method == "POST":
         question_title = request.form['question_title']
         question_message = request.form['message']
         question_user = request.form['user']
-        query.fetch_user_id(question_user)
         query.insert_data(question_title, question_message, question_user)
+        query.fetch_user_id(question_user)
         return redirect(url_for('home_page'))
-    return render_template("add_question.html",  all_user=all_user, title=title, button_name=title)
+    return render_template("add_question.html",  list_all_user=list_all_user, title=title, button_name=title)
 
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
@@ -41,61 +42,74 @@ def question_page(question_id):
     answer_comment_data = query.answer_comment(question_id)
 
     # vote question
+    question_user_id = request.args.get('question_user_id')
     current_question_vote = request.args.get('current_question_vote')
     if request.args.get('vote') == "add":
         query.update_vote("question", question_id, int(current_question_vote) + 1)
+        query.update_reputation("+", 5, int(question_user_id))
         return redirect(url_for('question_page', question_id=question_id))
     elif request.args.get('vote') == "remove":
         query.update_vote("question", question_id, int(current_question_vote) - 1)
+        query.update_reputation("-", 2, int(question_user_id))
         return redirect(url_for('question_page', question_id=question_id))
 
     # vote answer
+    answer_user_id = request.args.get('answer_user_id')
     current_answer_vote = request.args.get('current_answer_vote')
     answer_id = request.args.get('answer_id')
     if request.args.get('vote_answer') == "add":
         query.update_vote("answer", int(answer_id), int(current_answer_vote) + 1)
+        query.update_reputation("+", 10, int(answer_user_id))
         return redirect(url_for('question_page', question_id=question_id))
     elif request.args.get('vote_answer') == "remove":
         query.update_vote("answer", int(answer_id), int(current_answer_vote) - 1)
+        query.update_reputation("-", 2, int(answer_user_id))
         return redirect(url_for('question_page', question_id=question_id))
 
     return render_template('question_page.html', question_data=question_data, answer_data=answer_data,
                            question_comment_data=question_comment_data, answer_comment_data=answer_comment_data)
 
-
+  
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
     title = "Add answer"
+    list_all_user = query.list_all_user()
     if request.method == "POST":
         answer_message = request.form['message']
-        query.insert_answer(answer_message, question_id)
+        answer_user = request.form['user']
+        query.insert_answer(answer_message, question_id, answer_user)
+        query.fetch_user_id(answer_user)
         return redirect(url_for('question_page', question_id=question_id))
-    return render_template("add_answer.html",  title=title, button_name=title)
+    return render_template("add_answer.html",  list_all_user=list_all_user, title=title, button_name=title)
 
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_question(question_id):
     add_comment_question = query.get_question(question_id)
+    list_all_user = query.list_all_user()
     if request.method == 'POST':
         comment_message = request.form['message']
-        insert_question_comment = query.insert_question_comment(comment_message, question_id)
+        comment_user = request.form['user']
+        insert_question_comment = query.insert_question_comment(comment_message, question_id, comment_user)
+        query.fetch_user_id(comment_user)
         return redirect(url_for('question_page', question_id=question_id))
-        
     return render_template("add_comment_question.html", add_comment_question=add_comment_question,
-                           question_id=question_id, title="Add comment to question")
-
+                           question_id=question_id, list_all_user=list_all_user, title="Add comment to question")
 
 @app.route('/answer/<int:answer_id>/new-comment', methods=['GET'])
 def add_comment_answer(answer_id):
     add_comment_answer = query.get_answer(answer_id)
+    list_all_user = query.list_all_user()
     return render_template("add_comment_answer.html", add_comment_answer=add_comment_answer,
-                           answer_id=answer_id, title="Add comment to answer")
+                           answer_id=answer_id, list_all_user=list_all_user, title="Add comment to answer")
 
 
 @app.route('/answer/<int:answer_id>/new-comment', methods=['POST'])
 def add_comment_answer_post(answer_id):
     comment_message = request.form['message']
-    insert_answer_comment = query.insert_answer_comment(comment_message, answer_id)
+    comment_user = request.form['user']
+    query.fetch_user_id(comment_user)
+    insert_answer_comment = query.insert_answer_comment(comment_message, answer_id, comment_user)
     question_id_from_answer = query.question_id_from_answer(answer_id)
     return redirect(url_for('question_page', question_id=question_id_from_answer))
 
@@ -114,8 +128,19 @@ def add_new_user():
 @app.route("/users")
 def users():
     all_user = query.all_user()
-
     return render_template("users.html", all_user=all_user, title="All registered user")
+
+  
+@app.errorhandler(404)
+def page_not_found(e):
+    title = "404 - This page not found"
+    return render_template('error.html', title=title), 404
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+    title = "500 - Internal Server Error"
+    return render_template('error.html', title=title), 500
 
 
 if __name__ == "__main__":

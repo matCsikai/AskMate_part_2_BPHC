@@ -15,8 +15,8 @@ def all_question():
     return config.run_query(query)
 
 
-def all_user():
-    query = """SELECT username FROM users;"""
+def list_all_user():
+    query = """SELECT username FROM users"""
     rows = config.run_query(query)
     user_names = []
     for name in rows:
@@ -38,11 +38,12 @@ def fetch_user_id(user):
     return config.run_query(query)
 
 
-def insert_answer(message, question_id):
+def insert_answer(message, question_id, user):
     answer_id = get_max_id_answer()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = fetch_user_id(user)[0][0]
     query = """INSERT INTO answer
-            VALUES (%s, '%s', 0, '%s', '%s', 0) """ % (answer_id, dt, question_id, message)
+            VALUES (%s, '%s', 0, '%s', '%s', 0, '%d') """ % (answer_id, dt, question_id, message, user_id)
     return config.run_query(query)
 
 
@@ -80,11 +81,12 @@ def get_question(question_id):
     return rows
 
 
-def insert_question_comment(message, question_id):
+def insert_question_comment(message, question_id, user):
     comment_id = get_max_id_comment()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = fetch_user_id(user)[0][0]
     query = """INSERT INTO comment
-            VALUES (%s, %s, null, '%s', '%s') """ % (comment_id, question_id, message, dt)
+            VALUES (%s, %s, null, '%s', '%s', '%d') """ % (comment_id, question_id, message, dt, user_id)
     return config.run_query(query)
 
 
@@ -110,11 +112,12 @@ def get_answer(answer_id):
     return rows
 
 
-def insert_answer_comment(message, answer_id):
+def insert_answer_comment(message, answer_id, user):
     comment_id = get_max_id_comment()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user_id = fetch_user_id(user)[0][0]
     query = """INSERT INTO comment
-            VALUES (%s, null, %s, '%s', '%s') """ % (comment_id, answer_id, message, dt)
+            VALUES (%s, null, %s, '%s', '%s', '%d') """ % (comment_id, answer_id, message, dt, user_id)
     return config.run_query(query)
 
 
@@ -139,7 +142,8 @@ def insert_username(user):
                 VALUES ('%s') """ % user
         return config.run_query(query)
     except psycopg2.IntegrityError as error:
-        print("The username is invalid or already exist.")
+        message = "The username is invalid or already exist."
+        print(message)
 
 
 def all_user():
@@ -148,3 +152,11 @@ def all_user():
     ORDER BY reputation DESC;"""
     return config.run_query(query)
 
+
+def update_reputation(operator, value, user_id):
+    query = """
+        UPDATE users
+        SET reputation = reputation %s %s
+        WHERE id = %s;
+        """ % (operator, value, user_id)
+    return config.run_query(query)

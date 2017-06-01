@@ -1,7 +1,14 @@
 {% include 'header.html' %}
-
-    <hr>
-    <form method="POST">
+    <form method="POST">    
+        <p><label for="user">User</label>
+            <select name="user" id="user" required>
+                <option> </option>
+                {% for user_name in list_all_user %}
+                <option>{{ user_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <hr>
         <label for="answer"></label>
         <textarea name="message" id="" cols="50" rows="10" minlength="10"></textarea>
         <input type="submit" value="Send" class="button">
