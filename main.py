@@ -40,22 +40,28 @@ def question_page(question_id):
     question_comment_data = query.question_comment(question_id)
 
     # vote question
+    question_user_id = request.args.get('question_user_id')
     current_question_vote = request.args.get('current_question_vote')
     if request.args.get('vote') == "add":
         query.update_vote("question", question_id, int(current_question_vote) + 1)
+        query.update_reputation("+", 5, int(question_user_id))
         return redirect(url_for('question_page', question_id=question_id))
     elif request.args.get('vote') == "remove":
         query.update_vote("question", question_id, int(current_question_vote) - 1)
+        query.update_reputation("-", 2, int(question_user_id))
         return redirect(url_for('question_page', question_id=question_id))
 
     # vote answer
+    answer_user_id = request.args.get('answer_user_id')
     current_answer_vote = request.args.get('current_answer_vote')
     answer_id = request.args.get('answer_id')
     if request.args.get('vote_answer') == "add":
         query.update_vote("answer", int(answer_id), int(current_answer_vote) + 1)
+        query.update_reputation("+", 10, int(answer_user_id))
         return redirect(url_for('question_page', question_id=question_id))
     elif request.args.get('vote_answer') == "remove":
         query.update_vote("answer", int(answer_id), int(current_answer_vote) - 1)
+        query.update_reputation("-", 2, int(answer_user_id))
         return redirect(url_for('question_page', question_id=question_id))
 
     # answer_comment_data = query.answer_comment(answer_id)

@@ -141,3 +141,11 @@ def all_user():
     ORDER BY reputation DESC;"""
     return config.run_query(query)
 
+
+def update_reputation(operator, value, user_id):
+    query = """
+        UPDATE users
+        SET reputation = reputation %s %s
+        WHERE id = %s;
+        """ % (operator, value, user_id)
+    return config.run_query(query)
